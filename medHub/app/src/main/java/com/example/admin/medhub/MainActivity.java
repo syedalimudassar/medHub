@@ -1,5 +1,4 @@
 package com.example.admin.medhub;
-
 /**
  * Created by Admin on 27-03-2017.
  */
@@ -8,11 +7,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.firebase.client.Firebase;
-import com.firebase.client.Query;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import org.parceler.Parcels;
 
@@ -22,8 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
     private final static String SAVED_ADAPTER_ITEMS = "SAVED_ADAPTER_ITEMS";
     private final static String SAVED_ADAPTER_KEYS = "SAVED_ADAPTER_KEYS";
-
     private Query mQuery;
+    private Firebase mRef;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     private ProductAdapter mMyAdapter;
     private ArrayList<Data> mAdapterItems;
     private ArrayList<String> mAdapterKeys;
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         handleInstanceState(savedInstanceState);
         setupFirebase();
         setupRecyclerview();
@@ -53,12 +53,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupFirebase() {
         Firebase.setAndroidContext(this);
-        mQuery = new Firebase("https://medhub-e6d40.firebaseio.com/");
+        mRef = new Firebase("https://medhub-e6d40.firebaseio.com/");
+        // Get a reference to our posts
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("Medicine");
     }
 
     private void setupRecyclerview() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        mMyAdapter = new ProductAdapter(mAdapterItems, mAdapterKeys);
+        mMyAdapter = new ProductAdapter(databaseReference.getParent(),mAdapterItems, mAdapterKeys);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mMyAdapter);
     }

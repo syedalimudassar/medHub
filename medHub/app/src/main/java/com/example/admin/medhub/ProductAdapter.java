@@ -8,8 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
-import com.firebase.client.Query;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.List;

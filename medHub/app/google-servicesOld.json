@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "185558660648",
+    "firebase_url": "https://medhub-e6d40.firebaseio.com",
+    "project_id": "medhub-e6d40",
+    "storage_bucket": "medhub-e6d40.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185558660648:android:5e83026f661acace",
+        "android_client_info": {
+          "package_name": "com.example.admin.medhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "185558660648-d5g0ttg8f6vtvfe0bb77osscv2t4hlt3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLgSEZq_a7kOgWgGYZTDE3vXZh2PLMcTc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

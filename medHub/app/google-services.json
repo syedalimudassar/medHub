@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "185558660648",
-    "firebase_url": "https://medhub-e6d40.firebaseio.com",
-    "project_id": "medhub-e6d40",
-    "storage_bucket": "medhub-e6d40.appspot.com"
+    "project_number": "1041636532310",
+    "firebase_url": "https://mydatabase-17fc7.firebaseio.com",
+    "project_id": "mydatabase-17fc7",
+    "storage_bucket": "mydatabase-17fc7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:185558660648:android:5e83026f661acace",
+        "mobilesdk_app_id": "1:1041636532310:android:136e48df48d4e8d3",
         "android_client_info": {
-          "package_name": "com.example.admin.medhub"
+          "package_name": "com.hrawat.mydb"
         }
       },
       "oauth_client": [
         {
-          "client_id": "185558660648-d5g0ttg8f6vtvfe0bb77osscv2t4hlt3.apps.googleusercontent.com",
+          "client_id": "1041636532310-e7ks814b54avss56dudjjbn3f6lsjjde.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hrawat.mydb",
+            "certificate_hash": "30baa8af81c38fbedd38efc14b19d85a0f31797d"
+          }
+        },
+        {
+          "client_id": "1041636532310-svr3n3i5ark39erplopsre95qfb9sqbe.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBLgSEZq_a7kOgWgGYZTDE3vXZh2PLMcTc"
+          "current_key": "AIzaSyCaIrN1RQa7Gna-aK5V2Anj1imUyP9mti8"
         }
       ],
       "services": {
@@ -29,8 +37,57 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1041636532310-svr3n3i5ark39erplopsre95qfb9sqbe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041636532310:android:5e83026f661acace",
+        "android_client_info": {
+          "package_name": "com.example.admin.medhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1041636532310-vdgi35rjs03gmdmau6fp0c9t1lklrdr7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.admin.medhub",
+            "certificate_hash": "30baa8af81c38fbedd38efc14b19d85a0f31797d"
+          }
+        },
+        {
+          "client_id": "1041636532310-svr3n3i5ark39erplopsre95qfb9sqbe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaIrN1RQa7Gna-aK5V2Anj1imUyP9mti8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1041636532310-svr3n3i5ark39erplopsre95qfb9sqbe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

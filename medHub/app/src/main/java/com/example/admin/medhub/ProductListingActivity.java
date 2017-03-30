@@ -3,16 +3,12 @@ package com.example.admin.medhub;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,12 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-
-import static android.R.attr.data;
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Admin on 26-03-2017.
@@ -85,7 +76,7 @@ public class ProductListingActivity extends Activity {
                             .load(storageRef)
                             .into(imageView);*/
                 }
-                ProductAdapter.replaceAll();
+//                ProductAdapter.replaceAll();
             }
 
             @Override
@@ -97,7 +88,7 @@ public class ProductListingActivity extends Activity {
 
         recyclerView = (RecyclerView) findViewById(R.id.hero);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        productAdapter = new ProductAdapter(this, records);
+//        productAdapter = new ProductAdapter(null,ite, records);
         recyclerView.setAdapter(productAdapter);
     }
 }
