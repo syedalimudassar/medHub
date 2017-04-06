@@ -13,4 +13,5 @@
         android:indeterminateOnly="false"
         android:padding="8dp"
         db:cpb_colors="@array/progress_bar_colors_theme" />
+
 </LinearLayout>

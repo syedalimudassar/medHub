@@ -1,6 +1,7 @@
 package com.example.admin.medhub;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,12 +11,16 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -36,13 +41,16 @@ import java.io.ByteArrayOutputStream;
 public class AddProductActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
     private Spinner spinner;
-    public EditText tradeName, price, manufacturerName, unit, quantity;
+    public EditText tradeName, price, manufacturerName, unit, quantity, dealerName, dealerID;
+    TextView basicInfo, medInfo, dealerInfo;
+    LinearLayout llBaseInfo, llMedInfo, llDealerInfo;
     private Button submit;
     private static final String[] methods = {"Oral", "Ophthalmic", "Inhalation", "Parenteral", "Topical", "Suppository"};
     private ImageView imageView;
     private static final int SELECT_PICTURE = 100;
-    public String str_tradeName, str_price, str_manufacturerName, str_unit, str_quantity, str_type;
+    public String str_tradeName, str_price, str_manufacturerName, str_unit, str_quantity, str_type, str_dealerName, str_dealerID, str_url;
     public DatabaseReference mDatabase;
+    private FirebaseDatabase mFirebaseInstance;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://medhub-e6d40.appspot.com");
@@ -51,14 +59,27 @@ public class AddProductActivity extends Activity implements AdapterView.OnItemSe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addproduct);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+        mDatabase = mFirebaseInstance.getReference("medicines");
+        mFirebaseInstance.getReference("app_title").setValue("MedHub Database");
+
         tradeName = (EditText) findViewById(R.id.ed_tradeName);
         price = (EditText) findViewById(R.id.ed_price);
         manufacturerName = (EditText) findViewById(R.id.ed_manufacturerName);
         unit = (EditText) findViewById(R.id.ed_unit);
         quantity = (EditText) findViewById(R.id.ed_quantity);
+        dealerName = (EditText) findViewById(R.id.ed_dealerName);
+        dealerID = (EditText) findViewById(R.id.ed_dealerID);
 
         submit = (Button) findViewById(R.id.btn_submit);
+
+        basicInfo = (TextView) findViewById(R.id.tv_basicInfo);
+        medInfo = (TextView) findViewById(R.id.tv_medInfo);
+        dealerInfo = (TextView) findViewById(R.id.tv_dealerInfo);
+
+        llBaseInfo = (LinearLayout) findViewById(R.id.ll_basicInfo);
+        llMedInfo = (LinearLayout) findViewById(R.id.ll_medInfo);
+        llDealerInfo = (LinearLayout) findViewById(R.id.ll_dealerInfo);
 
         imageView = (ImageView) findViewById(R.id.imageViewAdd);
 
@@ -72,10 +93,16 @@ public class AddProductActivity extends Activity implements AdapterView.OnItemSe
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+        llMedInfo.setVisibility(View.GONE);
+        llDealerInfo.setVisibility(View.GONE);
+        llBaseInfo.setVisibility(View.GONE);
+
         onImageViewClick(); // for selecting an Image from gallery.
         onUploadButtonClick();
 
     }
+
+
 
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
 
@@ -159,6 +186,8 @@ public class AddProductActivity extends Activity implements AdapterView.OnItemSe
                 str_quantity = quantity.getText().toString();
                 str_tradeName = tradeName.getText().toString();
                 str_unit = unit.getText().toString();
+                str_dealerName= dealerName.getText().toString();
+                str_dealerID= dealerID.getText().toString();
 
                 StorageReference myfileRef = storageRef.child(str_tradeName);
                 imageView.setDrawingCacheEnabled(true);
@@ -175,21 +204,87 @@ public class AddProductActivity extends Activity implements AdapterView.OnItemSe
                         Toast.makeText(AddProductActivity.this, "TASK FAILED", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @SuppressWarnings("VisibleForTests")
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Toast.makeText(AddProductActivity.this, "TASK SUCCEEDED", Toast.LENGTH_SHORT).show();
-                        @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         String DOWNLOAD_URL = downloadUrl.getPath();
+                        /*str_url= taskSnapshot.getDownloadUrl().getPath();*/
+                        Data medData = new Data(str_tradeName, DOWNLOAD_URL, str_manufacturerName, str_price, str_quantity, str_unit, str_type, str_dealerName, str_dealerID);
+                        mDatabase.child(str_tradeName).setValue(medData);
                         Log.v("DOWNLOAD URL", DOWNLOAD_URL);
                         Toast.makeText(AddProductActivity.this, DOWNLOAD_URL, Toast.LENGTH_SHORT).show();
                     }
                 });
-
-                Data medData = new Data(str_tradeName, str_price, str_manufacturerName, str_unit, str_quantity, str_type);
-                mDatabase.child(str_tradeName).setValue(medData);
             }
         });
-
-
     }
+
+    public void toggle_contents(View v) {
+
+        if(v.equals(basicInfo)){
+            if(llBaseInfo.isShown()){
+                basicInfo.setCompoundDrawablesWithIntrinsicBounds(0,0, android.R.drawable.arrow_down_float,0);
+                this.slide_up(this, llBaseInfo);
+                llBaseInfo.setVisibility(View.GONE);
+            }
+            else{
+                basicInfo.setCompoundDrawablesWithIntrinsicBounds(0,0, android.R.drawable.arrow_up_float,0);
+                llBaseInfo.setVisibility(View.VISIBLE);
+                this.slide_down(this, llBaseInfo);
+            }
+        }
+
+        if(v.equals(medInfo)){
+            if(llMedInfo.isShown()){
+                medInfo.setCompoundDrawablesWithIntrinsicBounds(0,0, android.R.drawable.arrow_down_float,0);
+                this.slide_up(this, llMedInfo);
+                llMedInfo.setVisibility(View.GONE);
+            }
+            else{
+                medInfo.setCompoundDrawablesWithIntrinsicBounds(0,0, android.R.drawable.arrow_up_float,0);
+                llMedInfo.setVisibility(View.VISIBLE);
+                this.slide_down(this, llMedInfo);
+            }
+        }
+
+        if(v.equals(dealerInfo)){
+            if(llDealerInfo.isShown()){
+                dealerInfo.setCompoundDrawablesWithIntrinsicBounds(0,0, android.R.drawable.arrow_down_float,0);
+                this.slide_up(this, llDealerInfo);
+                llDealerInfo.setVisibility(View.GONE);
+            }
+            else{
+                dealerInfo.setCompoundDrawablesWithIntrinsicBounds(0,0, android.R.drawable.arrow_up_float,0);
+                llDealerInfo.setVisibility(View.VISIBLE);
+                this.slide_down(this, llDealerInfo);
+            }
+        }
+    }
+
+    public static void slide_down(Context ctx, View v) {
+
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_down);
+        if (a != null) {
+            a.reset();
+            if (v != null) {
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+
+    public static void slide_up(Context ctx, View v) {
+
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_up);
+        if (a != null) {
+            a.reset();
+            if (v != null) {
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+
 }

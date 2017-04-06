@@ -1,12 +1,8 @@
 package com.example.admin.medhub;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,55 +15,36 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Admin on 26-03-2017.
+ * Created by Admin on 04-04-2017.
  */
 
-public class ProductListingActivity extends BaseActivity {
-
-    int count=0;
+public class ShoppingCart extends BaseActivity {
 
     public DatabaseReference mDatabase;
-    ArrayList<Data> list;
-    ProductAdapter productAdapter;
+    ArrayList<ShoppingCartData> list;
+    CartAdapter cartAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_productlisting);
-
-        TextView tv_count= (TextView) findViewById(R.id.tv_count);
-
-        ImageView cart= (ImageView) findViewById(R.id.imageViewCart);
-
-        cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent= new Intent(getApplicationContext(), ShoppingCart.class);
-                startActivity(intent);
-            }
-        });
-
-        count= ProductAdapter.getCount();
-        tv_count.setText(Integer.toString(count));
+        setContentView(R.layout.activity_shoppingcart);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mDatabase.child("cart").removeValue();
-
         list = new ArrayList<>();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_productList);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_shoppingCart);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        productAdapter = new ProductAdapter();
-        recyclerView.setAdapter(productAdapter);
-        showToast("Fetching medicine list");
+        cartAdapter = new CartAdapter();
+        recyclerView.setAdapter(cartAdapter);
+        showToast("Loading Cart");
         showProgress();
-        mDatabase.child("medicines").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("cart").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                manipulateData((HashMap<String, Data>) dataSnapshot.getValue());
+                manipulateData((HashMap<String, ShoppingCartData>) dataSnapshot.getValue());
                 hideProgress();
                 showToast("List updated...");
-                productAdapter.replaceAll(list);
+                cartAdapter.replaceAll(list);
             }
 
             @Override
@@ -76,9 +53,9 @@ public class ProductListingActivity extends BaseActivity {
         });
     }
 
-    private void manipulateData(Map<String, Data> map) {
+    private void manipulateData(Map<String, ShoppingCartData> map) {
         list.clear();
-        for (Map.Entry<String, Data> entry : map.entrySet()) {
+        for (Map.Entry<String, ShoppingCartData> entry : map.entrySet()) {
             String name = null;
             String manufacturer = null;
             String price = null;
@@ -112,7 +89,7 @@ public class ProductListingActivity extends BaseActivity {
                         break;
                 }
             }
-            list.add(new Data(name, url, manufacturer, price, quantity, unit, type, dealerName, dealerID));
+            list.add(new ShoppingCartData(name, url, manufacturer, price, quantity, unit, type, dealerName, dealerID));
         }
     }
 }

@@ -3,11 +3,11 @@ package com.example.admin.medhub;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
- * Created by Admin on 26-03-2017.
+ * Created by Admin on 04-04-2017.
  */
 
 @IgnoreExtraProperties
-public class Data {
+public class ShoppingCartData {
 
     private String name;
     private String url;
@@ -45,10 +45,10 @@ public class Data {
     private String dealerName;
     private String dealerID;
 
-    public Data() {
+    public ShoppingCartData() {
     }
 
-    public Data(String name, String url, String manufacturer, String price, String quantity, String unit, String type, String dealerName, String dealerID) {
+    public ShoppingCartData(String name, String url, String manufacturer, String price, String quantity, String unit, String type, String dealerName, String dealerID) {
         this.name = name;
         this.url = url;
         this.manufacturer = manufacturer;

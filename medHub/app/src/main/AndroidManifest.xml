@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.admin.medhub">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,19 +11,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivityPharm">
+
         </activity>
-        <activity android:name=".ProductListingActivity"/>
-        <activity android:name=".AddProductActivity"/>
-        <activity android:name=".ProfileActivity"/>
-        <activity android:name=".RegistrationActivity"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".LandingActivity">
+
         </activity>
-        <activity android:name=".activity.ProductListingActivity2">
+        <activity android:name=".LoginActivityUser">
+        </activity>
+        <activity android:name=".ProductListingActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".RegistrationActivityPharm" />
+
+        <activity android:name=".AddProductActivity">
+        </activity>
+        <activity android:name=".ShoppingCart" />
     </application>
+
 </manifest>
